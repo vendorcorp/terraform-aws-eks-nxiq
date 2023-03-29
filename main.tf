@@ -38,10 +38,10 @@ terraform {
 }
 
 # --------------------------------------------------------------------------
-# Deploy NXRM HA Cluster
+# Deploy NXIQ HA Cluster
 # --------------------------------------------------------------------------
-module "nxrm_pg_database" {
-  source = "./modules/nxrm-pg-db"
+module "nxiq_pg_database" {
+  source = "./modules/nxiq-pg-db"
 
   pg_hostname       = var.pg_hostname
   pg_port           = var.pg_port
@@ -49,17 +49,17 @@ module "nxrm_pg_database" {
   pg_admin_password = var.pg_admin_password
 }
 
-module "nxrm_ha_cluster" {
-  source = "./modules/nxrm-ha-cluster"
+module "nxiq_ha_cluster" {
+  source = "./modules/nxiq-ha-cluster"
 
   default_resource_tags = var.default_resource_tags
-  nxrm_name             = var.nxrm_name
-  nxrm_license_file     = var.nxrm_license_file
-  nxrm_version          = var.nxrm_version
+  nxiq_name             = var.nxiq_name
+  nxiq_license_file     = var.nxiq_license_file
+  nxiq_version          = var.nxiq_version
   replica_count         = var.replica_count
   db_hostname           = var.pg_hostname
   db_port               = var.pg_port
-  db_username           = module.nxrm_pg_database.nxrm_db_username
-  db_password           = module.nxrm_pg_database.nxrm_db_password
-  db_database           = module.nxrm_pg_database.nxrm_db_database
+  db_username           = module.nxiq_pg_database.nxiq_db_username
+  db_password           = module.nxiq_pg_database.nxiq_db_password
+  db_database           = module.nxiq_pg_database.nxiq_db_database
 }
