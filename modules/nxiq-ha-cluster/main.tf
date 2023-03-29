@@ -169,7 +169,13 @@ resource "kubernetes_deployment" "nxiq" {
           }
 
           port {
+            name           = "app"
             container_port = 8070
+          }
+
+          port {
+            name           = "admin"
+            container_port = 8071
           }
 
           security_context {
@@ -224,7 +230,7 @@ resource "kubernetes_deployment" "nxiq" {
 # --------------------------------------------------------------------------
 # Create k8s Service
 # --------------------------------------------------------------------------
-resource "kubernetes_service" "nxiq" {
+resource "kubernetes_service" "nxiq-app" {
   metadata {
     name      = "nxiq-ha-${var.nxiq_name}-svc"
     namespace = local.namespace
@@ -241,6 +247,30 @@ resource "kubernetes_service" "nxiq" {
       name        = "http"
       port        = 8070
       target_port = 8070
+      protocol    = "TCP"
+    }
+
+    type = "NodePort"
+  }
+}
+
+resource "kubernetes_service" "nxiq-admin" {
+  metadata {
+    name      = "nxiq-ha-${var.nxiq_name}-admin-svc"
+    namespace = local.namespace
+    labels = {
+      app = "nxiq-ha"
+    }
+  }
+  spec {
+    selector = {
+      app = kubernetes_deployment.nxiq.metadata.0.labels.app
+    }
+
+    port {
+      name        = "http"
+      port        = 8071
+      target_port = 8071
       protocol    = "TCP"
     }
 

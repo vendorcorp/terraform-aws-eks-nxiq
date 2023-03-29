@@ -27,3 +27,11 @@ output "nxiq_ha_k8s_service_id" {
 output "nxiq_ha_k8s_service_name" {
   value = module.nxiq_ha_cluster.nxiq_ha_k8s_service_name
 }
+
+output "nxiq_ha_k8s_admin_service_id" {
+  value = module.nxiq_ha_cluster.nxiq_ha_k8s_admin_service_id
+}
+
+output "nxiq_ha_k8s_admin_service_name" {
+  value = module.nxiq_ha_cluster.nxiq_ha_k8s_admin_service_name
+}
