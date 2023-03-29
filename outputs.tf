@@ -16,14 +16,14 @@
 #
 # --------------------------------------------------------------------------
 
-output "nxrm_ha_k8s_namespace" {
-  value = module.nxrm_ha_cluster.nxrm_ha_k8s_namespace
+output "nxiq_ha_k8s_namespace" {
+  value = module.nxiq_ha_cluster.nxiq_ha_k8s_namespace
 }
 
-output "nxrm_ha_k8s_service_id" {
-  value = module.nxrm_ha_cluster.nxrm_ha_k8s_service_id
+output "nxiq_ha_k8s_service_id" {
+  value = module.nxiq_ha_cluster.nxiq_ha_k8s_service_id
 }
 
-output "nxrm_ha_k8s_service_name" {
-  value = module.nxrm_ha_cluster.nxrm_ha_k8s_service_name
+output "nxiq_ha_k8s_service_name" {
+  value = module.nxiq_ha_cluster.nxiq_ha_k8s_service_name
 }

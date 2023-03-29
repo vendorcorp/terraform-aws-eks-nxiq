@@ -22,36 +22,36 @@ variable "default_resource_tags" {
   default     = {}
 }
 
-variable "nxrm_name" {
-  description = "Helpful friendly name for this NXRM Cluster (min 8 alpha characters)"
+variable "nxiq_name" {
+  description = "Helpful friendly name for this NXIQ Cluster (min 8 alpha characters)"
   type        = string
   validation {
-    condition     = length(regex("[[:alpha:]]{6,}", var.nxrm_name)) > 6
-    error_message = "Name for this NXRM must be 6 or more alpha characters."
+    condition     = length(regex("[[:alpha:]]{6,}", var.nxiq_name)) > 6
+    error_message = "Name for this NXIQ must be 6 or more alpha characters."
   }
 }
 
-variable "nxrm_license_file" {
+variable "nxiq_license_file" {
   description = "Path to a valid Sonatype License file for Nexus Repository Manager Pro."
   type        = string
   validation {
-    condition     = length(var.nxrm_license_file) > 5
-    error_message = "Name for this NXRM must be 6 or more alpha characters."
+    condition     = length(var.nxiq_license_file) > 5
+    error_message = "Name for this NXIQ must be 6 or more alpha characters."
   }
 }
 
-variable "nxrm_version" {
-  description = "Version of NXRM to deploy."
+variable "nxiq_version" {
+  description = "Version of NXIQ to deploy."
   type        = string
-  default     = "3.50.0"
+  default     = "1.158.0"
   validation {
-    condition     = length(var.nxrm_version) > 5
+    condition     = length(var.nxiq_version) > 5
     error_message = "Version must be supplied as X.Y.Z to match the Docker Image Tag."
   }
 }
 
 variable "replica_count" {
-  description = "Number of replicas to run in the Active-Active NXRM HA Cluster."
+  description = "Number of replicas to run in the Active-Active NXIQ HA Cluster."
   type        = number
   default     = 1
   validation {
@@ -86,7 +86,7 @@ variable "pg_admin_password" {
 }
 
 variable "create_database" {
-  description = "Whether a unique database will be created for this NXRM Cluster."
+  description = "Whether a unique database will be created for this NXIQ Cluster."
   type        = bool
   default     = true
   validation {

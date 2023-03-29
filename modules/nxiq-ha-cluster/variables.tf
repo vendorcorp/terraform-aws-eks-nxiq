@@ -68,8 +68,8 @@ variable "db_hostname" {
 
 variable "db_port" {
   description = "The port where your PostgreSQL service is accessible at."
-  type        = string
-  default     = null
+  type        = number
+  default     = 5432
 }
 
 variable "db_database" {

@@ -73,8 +73,8 @@ resource "kubernetes_secret" "nxiq" {
 # --------------------------------------------------------------------------
 resource "kubernetes_persistent_volume_claim" "nxiq" {
   metadata {
-    name      = "nxiq-pvc"
-    namespace = var.target_namespace
+    generate_name = "nxiq-${var.nxiq_name}-pvc"
+    namespace     = local.namespace
   }
   spec {
     access_modes       = ["ReadWriteMany"]
@@ -84,6 +84,20 @@ resource "kubernetes_persistent_volume_claim" "nxiq" {
         storage = "25Gi"
       }
     }
+  }
+}
+
+# --------------------------------------------------------------------------
+# Create k8s ConfigMap
+# --------------------------------------------------------------------------
+resource "kubernetes_config_map" "nxiq" {
+  metadata {
+    generate_name = "nxiq-${var.nxiq_name}-cfg-"
+    namespace     = local.namespace
+  }
+
+  data = {
+    "config.yml" = "${file("${path.module}/config.yml")}"
   }
 }
 
@@ -117,16 +131,6 @@ resource "kubernetes_deployment" "nxiq" {
       spec {
         node_selector = {
           instancegroup = "shared"
-        }
-
-        init_container {
-          name    = "chown-nexusdata-owner-to-nexus-and-init-log-dir"
-          image   = "busybox:1.33.1"
-          command = ["/bin/sh"]
-          args = [
-            "-c",
-            ">- chown -R '1000:1000' /sonatype-work"
-          ]
         }
 
         container {
@@ -164,16 +168,6 @@ resource "kubernetes_deployment" "nxiq" {
             value = var.db_username
           }
 
-          # env {
-          #   name  = "NEXUS_SECURITY_RANDOMPASSWORD"
-          #   value = false
-          # }
-
-          # env {
-          #   name  = "INSTALL4J_ADD_VM_PARAMS"
-          #   value = "-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Dnexus.licenseFile=/nxrm3-secrets/license.lic -Dnexus.datastore.enabled=true -Djava.util.prefs.userRoot=$${NEXUS_DATA}/javaprefs -Dnexus.datastore.nexus.jdbcUrl=jdbc:postgresql://$${DB_HOST}:$${DB_PORT}/$${DB_NAME} -Dnexus.datastore.nexus.username=$${DB_USER} -Dnexus.datastore.nexus.password=$${DB_PASSWORD} -Dnexus.datastore.clustered.enabled=true"
-          # }
-
           port {
             container_port = 8070
           }
@@ -188,8 +182,13 @@ resource "kubernetes_deployment" "nxiq" {
           }
 
           volume_mount {
-            mount_path = "/sonatype-work"
+            mount_path = "/sonatype-work/clm-cluster"
             name       = "nxiq-data"
+          }
+
+          volume_mount {
+            mount_path = "/etc/nexus-iq-server"
+            name       = "nxiq-config"
           }
         }
 
@@ -203,7 +202,18 @@ resource "kubernetes_deployment" "nxiq" {
         volume {
           name = "nxiq-data"
           persistent_volume_claim {
-            claim_name = "nxiq-data"
+            claim_name = kubernetes_persistent_volume_claim.nxiq.metadata[0].name
+          }
+        }
+
+        volume {
+          name = "nxiq-config"
+          config_map {
+            name = kubernetes_config_map.nxiq.metadata[0].name
+            items {
+              key  = "config.yml"
+              path = "config.yml"
+            }
           }
         }
       }
@@ -216,7 +226,7 @@ resource "kubernetes_deployment" "nxiq" {
 # --------------------------------------------------------------------------
 resource "kubernetes_service" "nxiq" {
   metadata {
-    name      = "nxiq-ha-${var.nxrm_name}-svc"
+    name      = "nxiq-ha-${var.nxiq_name}-svc"
     namespace = local.namespace
     labels = {
       app = "nxiq-ha"

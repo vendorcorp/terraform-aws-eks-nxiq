@@ -25,5 +25,5 @@ output "nxiq_ha_k8s_service_id" {
 }
 
 output "nxiq_ha_k8s_service_name" {
-  value = "nxiq3-ha-${var.nxiq_name}-svc"
+  value = "nxiq-ha-${var.nxiq_name}-svc"
 }
