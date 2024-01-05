@@ -163,7 +163,7 @@ resource "kubernetes_deployment" "nxiq" {
             value_from {
               secret_key_ref {
                 name = "nxiq-secrets"
-                key  = "db_password"
+                key  = "psql_password"
               }
             }
           }

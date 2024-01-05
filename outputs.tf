@@ -17,7 +17,7 @@
 # --------------------------------------------------------------------------
 
 output "nxiq_identifier" {
-  value = module.nxiq_ha_cluster.identifier
+  value = module.nxiq_ha_cluster.nxiq_identifier
 }
 
 output "nxiq_ha_service_id" {

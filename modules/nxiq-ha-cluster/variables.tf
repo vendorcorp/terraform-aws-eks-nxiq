@@ -27,8 +27,8 @@ variable "target_namespace" {
   type        = string
   default     = null
   validation {
-    condition     = length(regex("[[:alnum:]]{6,}", var.target_namespace)) > 6
-    error_message = "Target namespace should be longer than 6 characters."
+    condition     = length(regex("[A-Za-z][0-9A-Za-z-]{4,}", var.target_namespace)) > 4
+    error_message = "Target namespace should be longer than 4 characters."
   }
 }
 
