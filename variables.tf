@@ -22,6 +22,12 @@ variable "default_resource_tags" {
   default     = {}
 }
 
+variable "database_name_prefix" {
+  description = "Prefix for the PostgreSQL database name."
+  type        = string
+  default     = "nxiq"
+}
+
 variable "target_namespace" {
   description = "Namespace in which to deploy Sonatype IQ Server"
   type        = string
@@ -45,7 +51,7 @@ variable "storage_class_name" {
 variable "storage_volume_size" {
   description = "Size of the PV for Sonatype IQ Server"
   type        = string
-  default     = "25Gi"
+  default     = "5Gi"
 }
 
 variable "purpose" {
@@ -109,14 +115,4 @@ variable "pg_admin_password" {
   type        = string
   default     = null
   sensitive   = true
-}
-
-variable "create_database" {
-  description = "Whether a unique database will be created for this NXIQ Cluster."
-  type        = bool
-  default     = true
-  validation {
-    condition     = var.create_database == true
-    error_message = "Only true is currently supported for create_database!"
-  }
 }
