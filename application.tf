@@ -35,7 +35,7 @@ resource "kubernetes_namespace" "nxiq" {
 resource "kubernetes_secret" "nxiq" {
   metadata {
     name        = "nxiq-secrets"
-    namespace   = var.target_namespace
+    namespace   = kubernetes_namespace.nxiq.metadata[0].name
     annotations = {
       "nxiq.sonatype.com/cluster-id"  = local.identifier
       "nxiq.sonatype.com/purpose"     = var.purpose
@@ -59,7 +59,7 @@ resource "kubernetes_secret" "nxiq" {
 resource "kubernetes_persistent_volume_claim" "nxiq" {
   metadata {
     generate_name = "nxiq-data-"
-    namespace     = var.target_namespace
+    namespace     = kubernetes_namespace.nxiq.metadata[0].name
     annotations = {
       "nxiq.sonatype.com/cluster-id"  = local.identifier
       "nxiq.sonatype.com/purpose"     = var.purpose
@@ -82,7 +82,7 @@ resource "kubernetes_persistent_volume_claim" "nxiq" {
 resource "kubernetes_config_map" "nxiq" {
   metadata {
     generate_name   = "nxiq-configuration-"
-    namespace       = var.target_namespace
+    namespace       = kubernetes_namespace.nxiq.metadata[0].name
     annotations     = {
       "nxiq.sonatype.com/cluster-id"  = local.identifier
       "nxiq.sonatype.com/purpose"     = var.purpose
@@ -100,7 +100,7 @@ resource "kubernetes_config_map" "nxiq" {
 resource "kubernetes_deployment" "nxiq" {
   metadata {
     name            = "nxiq-ha"
-    namespace       = var.target_namespace
+    namespace       = kubernetes_namespace.nxiq.metadata[0].name
     annotations     = {
       "nxiq.sonatype.com/cluster-id"  = local.identifier
       "nxiq.sonatype.com/purpose"     = var.purpose
@@ -226,7 +226,7 @@ resource "kubernetes_deployment" "nxiq" {
 resource "kubernetes_service" "nxiq-app" {
   metadata {
     name            = "nxiq-ui-svc"
-    namespace       = var.target_namespace
+    namespace       = kubernetes_namespace.nxiq.metadata[0].name
     annotations     = {
       "nxiq.sonatype.com/cluster-id"  = local.identifier
       "nxiq.sonatype.com/purpose"     = var.purpose
@@ -254,7 +254,7 @@ resource "kubernetes_service" "nxiq-app" {
 resource "kubernetes_service" "nxiq-admin" {
   metadata {
     name            = "nxiq-admin-svc"
-    namespace       = var.target_namespace
+    namespace       = kubernetes_namespace.nxiq.metadata[0].name
     annotations     = {
       "nxiq.sonatype.com/cluster-id"  = local.identifier
       "nxiq.sonatype.com/purpose"     = var.purpose
