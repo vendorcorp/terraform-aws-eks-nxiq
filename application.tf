@@ -43,7 +43,7 @@ resource "kubernetes_secret" "nxiq" {
   }
 
   binary_data = {
-    "license.lic"   = filebase64("${var.nxrm_license_file}")
+    "license.lic"   = filebase64("${var.nxiq_license_file}")
   }
 
   data = {
@@ -138,7 +138,7 @@ resource "kubernetes_deployment" "nxiq" {
 
           env {
             name  = "NXIQ_DATABASE_NAME"
-            value = module.nxrm_pg_database.database_name
+            value = module.nxiq_pg_database.database_name
           }
 
           env {
@@ -158,7 +158,7 @@ resource "kubernetes_deployment" "nxiq" {
 
           env {
             name  = "NXIQ_DATABASE_USERNAME"
-            value = module.nxrm_pg_database.user_username
+            value = module.nxiq_pg_database.user_username
           }
 
           port {
