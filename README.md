@@ -13,27 +13,22 @@ An exmaple using this module can be found in [tools-nxiq-ha-cluster](https://git
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4.5 |
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.6.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.6.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.19.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.19.0 |
-| <a name="requirement_postgresql"></a> [postgresql](#requirement\_postgresql) | >= 1.15.0 |
 | <a name="requirement_postgresql"></a> [postgresql](#requirement\_postgresql) | >= 1.15.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19.0 >= 2.19.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.19.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_nxiq_ha_cluster"></a> [nxiq\_ha\_cluster](#module\_nxiq\_ha\_cluster) | ./modules/nxiq-ha-cluster | n/a |
-| <a name="module_nxiq_pg_database"></a> [nxiq\_pg\_database](#module\_nxiq\_pg\_database) | ./modules/nxiq-pg-db | n/a |
+| <a name="module_nxiq_pg_database"></a> [nxiq\_pg\_database](#module\_nxiq\_pg\_database) | git::ssh://git@github.com/vendorcorp/terraform-aws-rds-database.git | v0.1.0 |
 
 ## Resources
 
