@@ -20,7 +20,7 @@
 # Require a minimum version of Terraform and Providers
 # --------------------------------------------------------------------------
 terraform {
-  required_version = ">= 1.0.11"
+  required_version = ">= 1.4.5"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -35,31 +35,4 @@ terraform {
       version = ">= 1.15.0"
     }
   }
-}
-
-# --------------------------------------------------------------------------
-# Deploy NXIQ HA Cluster
-# --------------------------------------------------------------------------
-module "nxiq_pg_database" {
-  source = "./modules/nxiq-pg-db"
-
-  pg_hostname       = var.pg_hostname
-  pg_port           = var.pg_port
-  pg_admin_username = var.pg_admin_username
-  pg_admin_password = var.pg_admin_password
-}
-
-module "nxiq_ha_cluster" {
-  source = "./modules/nxiq-ha-cluster"
-
-  default_resource_tags = var.default_resource_tags
-  nxiq_name             = var.nxiq_name
-  nxiq_license_file     = var.nxiq_license_file
-  nxiq_version          = var.nxiq_version
-  replica_count         = var.replica_count
-  db_hostname           = var.pg_hostname
-  db_port               = var.pg_port
-  db_username           = module.nxiq_pg_database.nxiq_db_username
-  db_password           = module.nxiq_pg_database.nxiq_db_password
-  db_database           = module.nxiq_pg_database.nxiq_db_database
 }

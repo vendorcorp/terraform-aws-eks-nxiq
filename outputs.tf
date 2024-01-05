@@ -16,22 +16,22 @@
 #
 # --------------------------------------------------------------------------
 
-output "nxiq_ha_k8s_namespace" {
-  value = module.nxiq_ha_cluster.nxiq_ha_k8s_namespace
+output "nxiq_identifier" {
+  value = local.identifier
 }
 
-output "nxiq_ha_k8s_service_id" {
-  value = module.nxiq_ha_cluster.nxiq_ha_k8s_service_id
+output "nxiq_ha_service_id" {
+  value = kubernetes_service.nxiq-app.id
 }
 
-output "nxiq_ha_k8s_service_name" {
-  value = module.nxiq_ha_cluster.nxiq_ha_k8s_service_name
+output "nxiq_ha_service_name" {
+  value = kubernetes_service.nxiq-app.metadata[0].name
 }
 
-output "nxiq_ha_k8s_admin_service_id" {
-  value = module.nxiq_ha_cluster.nxiq_ha_k8s_admin_service_id
+output "nxiq_ha_admin_service_id" {
+  value = kubernetes_service.nxiq-admin.id
 }
 
-output "nxiq_ha_k8s_admin_service_name" {
-  value = module.nxiq_ha_cluster.nxiq_ha_k8s_admin_service_name
+output "nxiq_ha_admin_service_name" {
+  value = kubernetes_service.nxiq-admin.metadata[0].name
 }
