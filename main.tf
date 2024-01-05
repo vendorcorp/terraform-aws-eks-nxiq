@@ -20,7 +20,7 @@
 # Require a minimum version of Terraform and Providers
 # --------------------------------------------------------------------------
 terraform {
-  required_version = ">= 1.0.11"
+  required_version = ">= 1.4.5"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -53,7 +53,10 @@ module "nxiq_ha_cluster" {
   source = "./modules/nxiq-ha-cluster"
 
   default_resource_tags = var.default_resource_tags
-  nxiq_name             = var.nxiq_name
+  target_namespace      = var.target_namespace
+  storage_class_name    = var.storage_class_name
+  storage_volume_size   = var.storage_volume_size
+  purpose               = var.purpose
   nxiq_license_file     = var.nxiq_license_file
   nxiq_version          = var.nxiq_version
   replica_count         = var.replica_count

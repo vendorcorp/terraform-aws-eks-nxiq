@@ -16,8 +16,8 @@
 #
 # --------------------------------------------------------------------------
 
-output "nxiq_ha_k8s_namespace" {
-  value = local.namespace
+output "nxiq_identifier" {
+  value = local.identifier
 }
 
 output "nxiq_ha_k8s_service_id" {
@@ -25,7 +25,7 @@ output "nxiq_ha_k8s_service_id" {
 }
 
 output "nxiq_ha_k8s_service_name" {
-  value = "nxiq-ha-${var.nxiq_name}-svc"
+  value = kubernetes_service.nxiq-app.metadata[0].name
 }
 
 output "nxiq_ha_k8s_admin_service_id" {
@@ -33,5 +33,5 @@ output "nxiq_ha_k8s_admin_service_id" {
 }
 
 output "nxiq_ha_k8s_admin_service_name" {
-  value = "nxiq-ha-${var.nxiq_name}-admin-svc"
+  value = kubernetes_service.nxiq-admin.metadata[0].name
 }

@@ -16,11 +16,11 @@
 #
 # --------------------------------------------------------------------------
 
-resource "random_string" "nxiq_suffix" {
+resource "random_string" "identifier" {
   length  = 12
   special = false
 }
 
 locals {
-  namespace = "nxiq-${lower(random_string.nxiq_suffix.result)}"
+  identifier = "nxiq-${lower(random_string.identifier.result)}"
 }

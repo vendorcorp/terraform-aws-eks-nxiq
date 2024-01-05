@@ -20,7 +20,7 @@
 # Require a minimum version of Terraform and Providers
 # --------------------------------------------------------------------------
 terraform {
-  required_version = ">= 1.0.11"
+  required_version = ">= 1.4.5"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -38,9 +38,10 @@ terraform {
 # --------------------------------------------------------------------------
 resource "kubernetes_namespace" "nxiq" {
   metadata {
-    name = local.namespace
+    name = var.target_namespace
     annotations = {
-      "nxiq_purpose" = "${var.nxiq_name}"
+      "com.sonatype.iq/cluster-id" = local.identifier
+      "com.sonatype.iq/purpose" = var.purpose
     }
   }
 }
@@ -51,9 +52,10 @@ resource "kubernetes_namespace" "nxiq" {
 resource "kubernetes_secret" "nxiq" {
   metadata {
     name      = "nxiq-secrets"
-    namespace = local.namespace
+    namespace = var.target_namespace
     annotations = {
-      "nxiq_purpose" = "${var.nxiq_name}"
+      "com.sonatype.iq/cluster-id" = local.identifier
+      "com.sonatype.iq/purpose" = var.purpose
     }
   }
 
@@ -62,7 +64,7 @@ resource "kubernetes_secret" "nxiq" {
   }
 
   data = {
-    "db_password" = var.db_password
+    "psql_password" = var.db_password
   }
 
   type = "Opaque"
@@ -73,27 +75,35 @@ resource "kubernetes_secret" "nxiq" {
 # --------------------------------------------------------------------------
 resource "kubernetes_persistent_volume_claim" "nxiq" {
   metadata {
-    generate_name = "nxiq-${var.nxiq_name}-pvc"
-    namespace     = local.namespace
+    generate_name = "nxiq-data-pvc"
+    namespace     = var.target_namespace
+    annotations = {
+      "com.sonatype.iq/cluster-id" = local.identifier
+      "com.sonatype.iq/purpose" = var.purpose
+    }
   }
   spec {
     access_modes       = ["ReadWriteMany"]
-    storage_class_name = "efs-fs"
+    storage_class_name = var.storage_class_name
     resources {
       requests = {
-        storage = "25Gi"
+        storage = var.storage_volume_size
       }
     }
   }
 }
 
 # --------------------------------------------------------------------------
-# Create k8s ConfigMap
+# Create k8s ConfigMap for config.yml
 # --------------------------------------------------------------------------
 resource "kubernetes_config_map" "nxiq" {
   metadata {
-    generate_name = "nxiq-${var.nxiq_name}-cfg-"
-    namespace     = local.namespace
+    generate_name = "nxiq-configuration-"
+    namespace     = var.target_namespace
+    annotations = {
+      "com.sonatype.iq/cluster-id" = local.identifier
+      "com.sonatype.iq/purpose" = var.purpose
+    }
   }
 
   data = {
@@ -106,8 +116,12 @@ resource "kubernetes_config_map" "nxiq" {
 # --------------------------------------------------------------------------
 resource "kubernetes_deployment" "nxiq" {
   metadata {
-    name      = "nxiq-ha-${var.nxiq_name}"
-    namespace = local.namespace
+    name      = "nxiq-ha"
+    namespace     = var.target_namespace
+    annotations = {
+      "com.sonatype.iq/cluster-id" = local.identifier
+      "com.sonatype.iq/purpose" = var.purpose
+    }
     labels = {
       app = "nxiq-ha"
     }
@@ -129,10 +143,6 @@ resource "kubernetes_deployment" "nxiq" {
       }
 
       spec {
-        node_selector = {
-          instancegroup = "shared"
-        }
-
         container {
           image             = "sonatype/nexus-iq-server:${var.nxiq_version}"
           name              = "nxiq-app"
@@ -232,8 +242,12 @@ resource "kubernetes_deployment" "nxiq" {
 # --------------------------------------------------------------------------
 resource "kubernetes_service" "nxiq-app" {
   metadata {
-    name      = "nxiq-ha-${var.nxiq_name}-svc"
-    namespace = local.namespace
+    name      = "nxiq-ui-svc"
+    namespace     = var.target_namespace
+    annotations = {
+      "com.sonatype.iq/cluster-id" = local.identifier
+      "com.sonatype.iq/purpose" = var.purpose
+    }
     labels = {
       app = "nxiq-ha"
     }
@@ -256,8 +270,12 @@ resource "kubernetes_service" "nxiq-app" {
 
 resource "kubernetes_service" "nxiq-admin" {
   metadata {
-    name      = "nxiq-ha-${var.nxiq_name}-admin-svc"
-    namespace = local.namespace
+    name      = "nxiq-admin-svc"
+    namespace     = var.target_namespace
+    annotations = {
+      "com.sonatype.iq/cluster-id" = local.identifier
+      "com.sonatype.iq/purpose" = var.purpose
+    }
     labels = {
       app = "nxiq-ha"
     }
