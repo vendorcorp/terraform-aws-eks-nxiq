@@ -41,7 +41,8 @@ An exmaple using this module can be found in [tools-nxiq-ha-cluster](https://git
 | [kubernetes_secret.nxiq](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_service.nxiq-admin](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service) | resource |
 | [kubernetes_service.nxiq-app](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service) | resource |
-| [random_string.pgsql_user_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [random_string.identifier](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [random_string.pg_suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 
 ## Inputs
 
@@ -49,8 +50,8 @@ An exmaple using this module can be found in [tools-nxiq-ha-cluster](https://git
 |------|-------------|------|---------|:--------:|
 | <a name="input_database_name_prefix"></a> [database\_name\_prefix](#input\_database\_name\_prefix) | Prefix for the PostgreSQL database name. | `string` | `"nxiq"` | no |
 | <a name="input_default_resource_tags"></a> [default\_resource\_tags](#input\_default\_resource\_tags) | List of tags to apply to all resources created in AWS | `map(string)` | `{}` | no |
-| <a name="input_nxiq_license_file"></a> [nxiq\_license\_file](#input\_nxiq\_license\_file) | Path to a valid Sonatype License file for Nexus Repository Manager Pro. | `string` | n/a | yes |
-| <a name="input_nxiq_version"></a> [nxiq\_version](#input\_nxiq\_version) | Version of NXIQ to deploy. | `string` | `"1.170.0"` | no |
+| <a name="input_nxiq_license_data"></a> [nxiq\_license\_data](#input\_nxiq\_license\_data) | Sonatype License data for IQ Server (base64 encoded). | `string` | n/a | yes |
+| <a name="input_nxiq_version"></a> [nxiq\_version](#input\_nxiq\_version) | Version of NXIQ to deploy. | `string` | `"1.171.0"` | no |
 | <a name="input_pg_admin_password"></a> [pg\_admin\_password](#input\_pg\_admin\_password) | Administrator/Root password to access your PostgreSQL service. | `string` | `null` | no |
 | <a name="input_pg_admin_username"></a> [pg\_admin\_username](#input\_pg\_admin\_username) | Administrator/Root user to access your PostgreSQL service. | `string` | `null` | no |
 | <a name="input_pg_hostname"></a> [pg\_hostname](#input\_pg\_hostname) | The hostname where your PostgreSQL service is accessible at. | `string` | `null` | no |

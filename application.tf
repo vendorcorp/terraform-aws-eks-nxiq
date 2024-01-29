@@ -43,7 +43,7 @@ resource "kubernetes_secret" "nxiq" {
   }
 
   binary_data = {
-    "license.lic"   = filebase64("${var.nxiq_license_file}")
+    "license.lic"   = "${var.nxiq_license_data}"
   }
 
   data = {
