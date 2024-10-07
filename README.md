@@ -28,7 +28,7 @@ An exmaple using this module can be found in [tools-nxiq-ha-cluster](https://git
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_nxiq_pg_database"></a> [nxiq\_pg\_database](#module\_nxiq\_pg\_database) | git::ssh://git@github.com/vendorcorp/terraform-aws-rds-database.git | v0.1.0 |
+| <a name="module_nxiq_pg_database"></a> [nxiq\_pg\_database](#module\_nxiq\_pg\_database) | git::ssh://git@github.com/vendorcorp/terraform-aws-rds-database.git | v0.1.1 |
 
 ## Resources
 
